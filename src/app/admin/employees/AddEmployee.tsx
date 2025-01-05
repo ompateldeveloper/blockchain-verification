@@ -14,12 +14,12 @@ import { abi } from "public/EmployeeExperience.json";
 import { DialogClose } from "@/components/ui/dialog";
 import { schema } from "./schema";
 
-
 type FormData = z.infer<typeof schema>;
 
 export default function AddEmployee() {
     const [status, setStatus] = React.useState("idle");
     const [error, setError] = React.useState("");
+    console.log(error);
     const dialogCloseRef = React.useRef<HTMLButtonElement>(null);
     const {
         register,
@@ -53,6 +53,7 @@ export default function AddEmployee() {
         //     endDate: format(String(data.endDate), "dd MMM yyyy"),
         // };
         return receipt.logs[0].args[0];
+
         // toast.success("Generating PDF in background, This could take a while", { duration: 5000 });
     };
     const onSubmit = async (data: FormData) => {
@@ -84,7 +85,6 @@ export default function AddEmployee() {
                 setStatus("idle");
                 setError("Error adding employee to Database");
             });
-            
     };
     return (
         <form className=" flex flex-col px-2 space-y-2 relative" onSubmit={handleSubmit(onSubmit)}>

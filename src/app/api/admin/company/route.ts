@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
             companyEmail,
             companyWebsite,
         },
-    })) as { password?: string; id?: String };
+    })) as { password?: string; id?: string };
     delete company.password;
     delete company.id;
 

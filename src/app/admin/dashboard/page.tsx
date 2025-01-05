@@ -24,7 +24,6 @@ export default function Page() {
         register,
         handleSubmit,
         reset,
-        watch,
         formState: { errors },
     } = useForm<FormData>({
         resolver: zodResolver(schema),
@@ -54,6 +53,7 @@ export default function Page() {
             .catch((error) => {
                 console.error("Error fetching company details:", error);
             });
+            
     }, []);
 
     return (

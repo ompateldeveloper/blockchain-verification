@@ -6,7 +6,7 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
-function ActiveLink({ href, children }: LinkProps & { children: any }) {
+function ActiveLink({ href, children }: LinkProps & { children: React.ReactNode }) {
     const pathname = usePathname();
     return (
         <Link href={href} className={` ${pathname === href ? "underline" : ""}`}>

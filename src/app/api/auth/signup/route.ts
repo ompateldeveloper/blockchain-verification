@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { signToken } from "@/lib/jwt";
-import { signupSchema } from "@/validators/authValidators";
-// import { signToken } from '@/'
 
 const prisma = new PrismaClient();
 

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Readable } from "stream";
 import { prisma } from "@/lib/prisma";
 import { getToken } from "@/lib/jwt";
 import { pinata } from "@/lib/pinata";
@@ -31,14 +30,14 @@ export async function POST(req: NextRequest) {
     const id = await getToken();
 
     const url = `https://${process.env.PINATA_URL}/ipfs/${uploadResult.IpfsHash}`;
-    const admin = await prisma.adminUsers.update({
-        where: {
-            id,
-        },
-        data: {
-            companyLogo: url,
-        },
-    });
+    // const admin = await prisma.adminUsers.update({
+    //     where: {
+    //         id,
+    //     },
+    //     data: {
+    //         companyLogo: url,
+    //     },
+    // });
     console.log("Upload successful:", uploadResult);
     return NextResponse.json({
         success: true,

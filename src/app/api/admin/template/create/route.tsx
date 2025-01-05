@@ -1,6 +1,6 @@
 import { getToken } from "@/lib/jwt";
 import { prisma } from "@/lib/prisma";
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { adjectives, animals, colors, uniqueNamesGenerator } from "unique-names-generator";
 export async function POST() {
     const adminId = await getToken();
