@@ -1,0 +1,69 @@
+// database for employee info on blockchain 
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model AdminUsers {
+  id String @id @default(cuid())
+
+  email          String  @unique
+  username       String? @unique
+  fname          String?
+  lname          String?
+  password       String
+  pk             String?
+  companyName    String?
+  companyAddress String?
+  companyPhone   String?
+  companyEmail   String?
+  companyWebsite String?
+  companyLogo    String?
+  companySign    String?
+
+  empData   EmpData[]
+  templates Templates[]
+}
+
+model Templates {
+  id String @id @default(cuid())
+
+  name String @unique
+
+  title String?
+
+  content1 String?
+  content2 String?
+  date String?
+  cid String?
+  footer String?
+
+  admin   AdminUsers @relation(fields: [adminId], references: [id])
+  adminId String @unique
+}
+
+model EmpData {
+  id String @id @default(cuid())
+
+  empId       String    @unique
+  empHash     String?   @unique
+  fname       String
+  mname       String?
+  lname       String
+  email       String?
+  startDate   DateTime
+  endDate     DateTime?
+  pfNumber    String?
+  phone       String?
+  department  String?
+  designation String?
+  salary      Int?
+
+  admin   AdminUsers @relation(fields: [adminId], references: [id])
+  adminId String
+}
