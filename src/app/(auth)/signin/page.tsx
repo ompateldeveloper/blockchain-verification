@@ -1,4 +1,5 @@
-'use client'
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import React from "react";
@@ -11,7 +12,6 @@ import Link from "next/link";
 import { signinSchema } from "@/validators/authValidators";
 import { instance } from "@/lib/instance";
 import { useRouter } from "next/navigation";
-
 
 type FormData = z.infer<typeof signinSchema>;
 
@@ -26,15 +26,15 @@ export default function Page() {
     });
 
     const onSubmit = (data: FormData) => {
-        instance.post("/auth/signin", data)
-        .then((response)=>{
-            console.log(response)
-            router.push('/admin')
-        })
-        .catch((error)=>{
-            console.log(error)
-        })
-
+        instance
+            .post("/auth/signin", data)
+            .then((response) => {
+                console.log(response);
+                router.push("/admin");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
@@ -60,7 +60,9 @@ export default function Page() {
                     </form>
                     <div className="mt-4">
                         <span className="text-zinc-600">Not a User? </span>
-                        <Link href="/signup" className="hover:underline">Sign Up</Link>
+                        <Link href="/signup" className="hover:underline">
+                            Sign Up
+                        </Link>
                     </div>
                 </CardContent>
             </Card>
