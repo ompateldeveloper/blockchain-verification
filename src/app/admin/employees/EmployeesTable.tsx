@@ -45,7 +45,6 @@ export default function EmployeesTable() {
             instance
                 .get(`/employees?page=${page}&limit=5`)
                 .then((response) => {
-                    console.log(response.data);
                     setEmployees(response.data.data);
                     setTotalPages(response.data.totalPages);
                 })
@@ -68,7 +67,6 @@ export default function EmployeesTable() {
         instance
             .delete(`/employees/${id}`)
             .then((response) => {
-                console.log(response);
                 fetchEmployees();
             })
             .catch((error) => {
@@ -126,7 +124,15 @@ export default function EmployeesTable() {
                                                 Edit details
                                             </DropdownMenuItem>
                                             {!employee.empHash && <DropdownMenuItem onClick={() => console.log("Re:do", employee.empId)}>Take Action</DropdownMenuItem>}
-                                            {employee.endDate && <DropdownMenuItem onClick={() => router.push('/certificate/'+employee.empId)}>View Certificate</DropdownMenuItem>}
+                                            {employee.endDate && (
+                                                <DropdownMenuItem
+                                                    onClick={() => {
+                                                        router.push("/certificate/" + employee.empId);
+                                                    }}
+                                                >
+                                                    View Certificate
+                                                </DropdownMenuItem>
+                                            )}
                                             <DropdownMenuItem className="text-red-500 dark:text-red-600" onClick={() => handleDelete(employee.empId)}>
                                                 Delete Employee Data
                                             </DropdownMenuItem>

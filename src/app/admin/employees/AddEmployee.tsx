@@ -43,7 +43,6 @@ export default function AddEmployee() {
         const contract = new ethers.Contract(contractAddress, abi, signer);
 
         const tx = await contract.addExperience(data.empId, `${data.fname} ${data.mname} ${data.lname}`, "Accentiqa", String(data.startDate), String(data.endDate), data.pfNumber);
-        console.log("adding to blockchain aaaaaaaaaaaa", tx);
         const receipt = await tx.wait();
 
         // const payload:{hash:string,name:string} = {
@@ -57,12 +56,10 @@ export default function AddEmployee() {
         // toast.success("Generating PDF in background, This could take a while", { duration: 5000 });
     };
     const onSubmit = async (data: FormData) => {
-        console.log(data, "data");
 
         instance
             .post("/employees", data)
             .then((response) => {
-                console.log(response.data);
                 setStatus("Updating hash on blockchain");
             })
             .catch((error) => {
@@ -75,7 +72,6 @@ export default function AddEmployee() {
         instance
             .post(`/employees/update-hash/${data.empId}`, { empHash })
             .then((response) => {
-                console.log(response.data);
                 setStatus("idle");
                 dialogCloseRef.current?.click();
                 reset();

@@ -30,7 +30,6 @@ export default function EditEmployee(employee: any) {
     useEffect(() => {
         reset(employee.employee);
 
-        console.log(employee);
         
     }, [employee]);
 
@@ -47,7 +46,6 @@ export default function EditEmployee(employee: any) {
         const contract = new ethers.Contract(contractAddress, abi, signer);
 
         const tx = await contract.updateExperience(data.empId, `${data.fname} ${data.mname} ${data.lname}`, "Accentiqa", String(data.startDate), String(data.endDate), data.pfNumber);
-        console.log("adding to blockchain aaaaaaaaaaaa", tx);
         const receipt = await tx.wait();
 
         // const payload:{hash:string,name:string} = {
@@ -60,13 +58,11 @@ export default function EditEmployee(employee: any) {
         // toast.success("Generating PDF in background, This could take a while", { duration: 5000 });
     };
     const onSubmit = async (data: FormData) => {
-        console.log(data, "data");
 
 
         instance
             .post("/employees", data)
             .then((response) => {
-                console.log(response.data);
                 setStatus("Updating hash on blockchain");
             })
             .catch((error) => {
@@ -79,7 +75,6 @@ export default function EditEmployee(employee: any) {
         instance
             .post(`/employees/update-hash/${data.empId}`, { empHash })
             .then((response) => {
-                console.log(response.data);
                 setStatus("idle");
                 dialogCloseRef.current?.click();
                 reset();

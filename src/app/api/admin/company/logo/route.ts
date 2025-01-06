@@ -15,7 +15,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    console.log("hahaahh");
 
     // try {
     const formData = await req.formData();

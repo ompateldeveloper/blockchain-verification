@@ -31,11 +31,9 @@ export default function Page() {
     const [logo, setLogo] = useState(null);
     const [sign, setSign] = useState(null);
     const onSubmit: SubmitHandler<FormData> = (data) => {
-        console.log(data);
         instance
             .post("/admin/company", data)
             .then((response) => {
-                console.log(response);
                 reset();
             })
             .catch((error) => {
@@ -53,7 +51,7 @@ export default function Page() {
             .catch((error) => {
                 console.error("Error fetching company details:", error);
             });
-            
+
     }, []);
 
     return (

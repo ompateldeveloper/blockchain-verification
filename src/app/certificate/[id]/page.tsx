@@ -51,7 +51,6 @@ export default function Page() {
             startDate: format(tx[3], "dd MMM yyyy"),
             endDate: tx[4],
         };
-        console.log(res);
 
         setData({ ...res, ...details });
         setLoading(false);

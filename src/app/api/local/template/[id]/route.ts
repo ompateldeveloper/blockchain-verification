@@ -3,8 +3,6 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const id = (await params).id;
-    console.log(id);
-
     const employee = await prisma.empData.findUnique({
         where: {
             empId: id,

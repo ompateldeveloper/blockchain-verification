@@ -47,7 +47,6 @@ export default function Page() {
 
     const onSubmit = (data: any) => {
         instance.put("/admin/template", data);
-        console.log(data);
     };
     function getTemplate() {
         instance
@@ -78,8 +77,6 @@ export default function Page() {
     }, []);
 
     useEffect(() => {
-        console.log(template);
-
         reset(template);
     }, [template]);
 

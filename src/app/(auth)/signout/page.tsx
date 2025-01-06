@@ -7,7 +7,6 @@ export default function Page() {
     instance
         .get("/auth/signout")
         .then((response) => {
-            console.log(response);
             router.push("/signin");
         })
         .catch((error) => {

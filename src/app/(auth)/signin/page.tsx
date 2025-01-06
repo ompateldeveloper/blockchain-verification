@@ -29,7 +29,6 @@ export default function Page() {
         instance
             .post("/auth/signin", data)
             .then((response) => {
-                console.log(response);
                 router.push("/admin");
             })
             .catch((error) => {

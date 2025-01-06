@@ -26,7 +26,6 @@ export default function Page() {
     const onSubmit = (data: FormData) => {
         instance.post("/auth/signup", data)
         .then((response)=>{
-            console.log(response)
         })
         .catch((error)=>{
             console.log(error)
