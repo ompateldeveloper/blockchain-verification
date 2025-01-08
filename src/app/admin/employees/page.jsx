@@ -15,7 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 export default function EmployeesPage() {
     const [connected, setConnected] = useState();
     const [walletAddress, setWalletAddress] = useState("");
-    // const searchParams = useSearchParams()
+    // const searchParams = useSearchParams();
     async function checkMetaMaskConnection() {
         if (typeof window.ethereum !== "undefined") {
             const provider = new ethers.BrowserProvider(window.ethereum);
