@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "@/lib/jwt";
 import { pinata } from "@/lib/pinata";
+import { prisma } from "@/lib/prisma";
 
 // Initialize Pinata client
 
@@ -14,7 +15,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-
     // try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
@@ -26,17 +26,17 @@ export async function POST(req: NextRequest) {
     console.log("Uploading to Pinata...");
     const uploadResult = await pinata.upload.file(file);
 
-    // const id = await getToken();
+    const id = await getToken();
 
     const url = `https://${process.env.PINATA_URL}/ipfs/${uploadResult.IpfsHash}`;
-    // const admin = await prisma.adminUsers.update({
-    //     where: {
-    //         id,
-    //     },
-    //     data: {
-    //         companySign: url,
-    //     },
-    // });
+    const admin = await prisma.adminUsers.update({
+        where: {
+            id,
+        },
+        data: {
+            companySign: url,
+        },
+    });
     console.log("Upload successful:", uploadResult);
     return NextResponse.json({
         success: true,

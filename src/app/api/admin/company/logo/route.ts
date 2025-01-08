@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     }
 
 
-    // try {
+    try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
 
@@ -29,14 +29,14 @@ export async function POST(req: NextRequest) {
     const id = await getToken();
 
     const url = `https://${process.env.PINATA_URL}/ipfs/${uploadResult.IpfsHash}`;
-    // const admin = await prisma.adminUsers.update({
-    //     where: {
-    //         id,
-    //     },
-    //     data: {
-    //         companyLogo: url,
-    //     },
-    // });
+    const admin = await prisma.adminUsers.update({
+        where: {
+            id,
+        },
+        data: {
+            companyLogo: url,
+        },
+    });
     console.log("Upload successful:", uploadResult);
     return NextResponse.json({
         success: true,
@@ -45,8 +45,8 @@ export async function POST(req: NextRequest) {
         pinSize: uploadResult.PinSize,
         timestamp: uploadResult.Timestamp,
     });
-    // } catch (error) {
-    //     console.error("Error uploading to Pinata:", error);
-    //     return NextResponse.json({ error: "Error uploading to Pinata" }, { status: 500 });
-    // }
+    } catch (error) {
+        console.error("Error uploading to Pinata:", error);
+        return NextResponse.json({ error: "Error uploading to Pinata" }, { status: 500 });
+    }
 }

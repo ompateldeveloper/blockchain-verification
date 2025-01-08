@@ -10,6 +10,7 @@ export async function GET() {
     });
     return NextResponse.json({ data: company }, { status: 200 });
 }
+
 export async function POST(request: NextRequest) {
     const { companyName, companyAddress, companyPhone, companyEmail, companyWebsite } = await request.json();
     const adminId = await getToken();
@@ -17,7 +18,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const company = (await prisma.adminUsers.update({
+    const company = await prisma.adminUsers.update({
         where: {
             id: adminId,
         },
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
             companyEmail,
             companyWebsite,
         },
-    })) as { password?: string; id?: string };
+    }) as { password?: string; id?: string };
     delete company.password;
     delete company.id;
 
