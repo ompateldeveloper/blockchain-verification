@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     const id = await getToken();
 
     const url = `https://${process.env.PINATA_URL}/ipfs/${uploadResult.IpfsHash}`;
-    const admin = await prisma.adminUsers.update({
+    await prisma.adminUsers.update({
         where: {
             id,
         },

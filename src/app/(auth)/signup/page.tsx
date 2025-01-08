@@ -27,7 +27,7 @@ export default function Page() {
 
     const onSubmit = (data: FormData) => {
         instance.post("/auth/signup", data)
-        .then((response)=>{
+        .then(()=>{
             router.push('/admin')
         })
         .catch((error)=>{

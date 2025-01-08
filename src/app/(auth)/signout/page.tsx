@@ -6,7 +6,7 @@ export default function Page() {
     const router = useRouter();
     instance
         .get("/auth/signout")
-        .then((response) => {
+        .then(() => {
             router.push("/signin");
         })
         .catch((error) => {

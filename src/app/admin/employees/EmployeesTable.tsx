@@ -177,7 +177,7 @@ export default function EmployeesTable() {
                 <Pagination>
                     <PaginationContent>
                         <PaginationItem>
-                            <PaginationPrevious href="#" />
+                            <PaginationPrevious href="#" onClick={handlePrevPage} />
                         </PaginationItem>
                         <PaginationItem>
                             <PaginationLink href="#">1</PaginationLink>
@@ -186,7 +186,7 @@ export default function EmployeesTable() {
                             <PaginationEllipsis />
                         </PaginationItem>
                         <PaginationItem>
-                            <PaginationNext href="#" />
+                            <PaginationNext href="#" onClick={handleNextPage} />
                         </PaginationItem>
                     </PaginationContent>
                 </Pagination>

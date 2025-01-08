@@ -1,5 +1,5 @@
 "use client";
-import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { instance } from "@/lib/instance";
 import { ethers } from "ethers";

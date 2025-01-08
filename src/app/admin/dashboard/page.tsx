@@ -33,7 +33,7 @@ export default function Page() {
     const onSubmit: SubmitHandler<FormData> = (data) => {
         instance
             .post("/admin/company", data)
-            .then((response) => {
+            .then(() => {
                 reset();
             })
             .catch((error) => {

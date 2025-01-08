@@ -12,7 +12,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Textarea } from "@/components/ui/textarea";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import QRCode from "react-qr-code";
-import { format } from "date-fns";
 
 const schema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -45,7 +44,7 @@ export default function Page() {
         resolver: zodResolver(schema),
     });
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: FormData) => {
         instance.put("/admin/template", data);
     };
     function getTemplate() {

@@ -18,6 +18,7 @@ type FormData = z.infer<typeof schema>;
 export default function EditEmployee(employee: any) {
     const [status, setStatus] = React.useState("idle");
     const [error, setError] = React.useState("");
+    console.log(error);
     const dialogCloseRef = React.useRef<HTMLButtonElement>(null);
     const {
         register,
@@ -62,7 +63,7 @@ export default function EditEmployee(employee: any) {
 
         instance
             .post("/employees", data)
-            .then((response) => {
+            .then(() => {
                 setStatus("Updating hash on blockchain");
             })
             .catch((error) => {
@@ -74,7 +75,7 @@ export default function EditEmployee(employee: any) {
         setStatus("Updating hash on database");
         instance
             .post(`/employees/update-hash/${data.empId}`, { empHash })
-            .then((response) => {
+            .then(() => {
                 setStatus("idle");
                 dialogCloseRef.current?.click();
                 reset();

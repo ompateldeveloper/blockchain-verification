@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
-export function signToken(payload: any) {
+export function signToken(payload: string | Buffer | object) {
     return jwt.sign(payload, JWT_SECRET);
 }
 
