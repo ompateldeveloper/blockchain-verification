@@ -10,11 +10,13 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { signupSchema } from "@/validators/authValidators";
 import { instance } from "@/lib/instance";
+import { useRouter } from "next/navigation";
 
 
 type FormData = z.infer<typeof signupSchema>;
 
 export default function Page() {
+    const router = useRouter()
     const {
         register,
         handleSubmit,
@@ -26,6 +28,7 @@ export default function Page() {
     const onSubmit = (data: FormData) => {
         instance.post("/auth/signup", data)
         .then((response)=>{
+            router.push('/admin')
         })
         .catch((error)=>{
             console.log(error)

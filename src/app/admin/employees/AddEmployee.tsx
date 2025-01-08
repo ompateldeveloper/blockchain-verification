@@ -44,19 +44,19 @@ export default function AddEmployee() {
 
         const tx = await contract.addExperience(data.empId, `${data.fname} ${data.mname} ${data.lname}`, "Accentiqa", String(data.startDate), String(data.endDate), data.pfNumber);
         const receipt = await tx.wait();
+        console.log(tx, "tx");
+        console.log(receipt, "receipt");
 
-        // const payload:{hash:string,name:string} = {
-        //     hash: receipt.logs[0].args[0],
-        //     name: receipt.logs[0].args[1],
-        //     startDate: format(String(data.startDate), "dd MMM yyyy"),
-        //     endDate: format(String(data.endDate), "dd MMM yyyy"),
-        // };
-        return receipt.logs[0].args[0];
-
-        // toast.success("Generating PDF in background, This could take a while", { duration: 5000 });
+        const payload: {
+            empHash: string;
+            tx: string;
+        } = {
+            empHash: receipt.logs[0].args[0],
+            tx: tx.hash || "",
+        };
+        return payload;
     };
     const onSubmit = async (data: FormData) => {
-
         instance
             .post("/employees", data)
             .then((response) => {
@@ -67,10 +67,10 @@ export default function AddEmployee() {
                 setStatus("idle");
                 setError("Error adding employee to Database");
             });
-        const empHash = await AddToBlockchain(data);
+        const { empHash, tx } = await AddToBlockchain(data);
         setStatus("Updating hash on database");
         instance
-            .post(`/employees/update-hash/${data.empId}`, { empHash })
+            .post(`/employees/update-hash/${data.empId}`, { empHash, tx })
             .then((response) => {
                 setStatus("idle");
                 dialogCloseRef.current?.click();

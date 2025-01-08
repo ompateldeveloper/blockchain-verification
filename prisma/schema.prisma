@@ -5,8 +5,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model AdminUsers {
@@ -39,12 +39,12 @@ model Templates {
 
   content1 String?
   content2 String?
-  date String?
-  cid String?
-  footer String?
+  date     String?
+  cid      String?
+  footer   String?
 
   admin   AdminUsers @relation(fields: [adminId], references: [id])
-  adminId String @unique
+  adminId String     @unique
 }
 
 model EmpData {
@@ -52,6 +52,7 @@ model EmpData {
 
   empId       String    @unique
   empHash     String?   @unique
+  tx      String?   @unique
   fname       String
   mname       String?
   lname       String

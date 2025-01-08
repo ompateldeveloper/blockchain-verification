@@ -10,11 +10,12 @@ import { ChevronDown, Info } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useSearchParams } from "next/navigation";
 
 export default function EmployeesPage() {
     const [connected, setConnected] = useState();
     const [walletAddress, setWalletAddress] = useState("");
-
+    const searchParams = useSearchParams()
     async function checkMetaMaskConnection() {
         if (typeof window.ethereum !== "undefined") {
             const provider = new ethers.BrowserProvider(window.ethereum);

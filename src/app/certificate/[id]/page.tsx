@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 import { abi } from "public/EmployeeExperience.json";
 import { format } from "date-fns";
+import Link from "next/link";
 
 type Certificate = {
     companyName: string;
@@ -22,6 +23,7 @@ type Certificate = {
     date: string | null;
     cid: string | null;
     empHash: string | null;
+    tx: string;
 };
 
 function resolveString(template: string, data: any) {
@@ -49,7 +51,8 @@ export default function Page() {
             name: tx[1],
             company: tx[2],
             startDate: format(tx[3], "dd MMM yyyy"),
-            endDate: tx[4],
+            endDate: format(tx[4], "dd MMM yyyy"),
+            pf: tx[5],
         };
 
         setData({ ...res, ...details });
@@ -73,11 +76,17 @@ export default function Page() {
                                 <Info className="w-6 px-1" />
                             </HoverCardTrigger>
                             <HoverCardContent className="space-y-2">
-                                <CardTitle>Verified By Blockchain</CardTitle>
-                                <CardDescription>
-                                    This certificate has been verified using blockchain technology. The authenticity of this document can be confirmed by scanning the QR code or visiting our
-                                    verification portal.
-                                </CardDescription>
+                                <div className="text-xl font-semibold">Verified by Blockchain</div>
+                                <div className="">
+                                    {data?.tx && (
+                                        <>
+                                            You can check this transaction on this{" "}
+                                            <Link href={"https://sepolia.etherscan.io/tx/" + data?.tx} target="_blank">
+                                                Etherium transaction link
+                                            </Link>{" "}
+                                        </>
+                                    )}
+                                </div>
                             </HoverCardContent>
                         </HoverCard>
                     </div>
@@ -95,11 +104,11 @@ export default function Page() {
                         <div className="grid grid-cols-2 gap-8 w-full max-w-md mx-auto mt-8">
                             <div className="text-center">
                                 <p className="font-semibold">Issue Date</p>
-                                <p className="text-sm text-gray-500">02 January 2025</p>
+                                <p className="text-sm text-gray-500">{data?.date}</p>
                             </div>
                             <div className="text-center">
                                 <p className="font-semibold">Certificate ID</p>
-                                <p className="text-sm text-gray-500">EXP20250102</p>
+                                <p className="text-sm text-gray-500">{data?.cid}</p>
                             </div>
                         </div>
                     </div>
@@ -107,14 +116,14 @@ export default function Page() {
                         <p className="mb-4">
                             Best Regards,
                             <br />
-                            For ACCENTIQA SYSTEMS PRIVATE LIMITED
+                            For {data?.companyName}
                         </p>
                         <div className="flex justify-between items-end">
                             <div>
                                 <img src={data?.companySign} className="w-36 aspect-auto" alt="Signature" />
                                 <p className="font-semibold">Radhika K</p>
                                 <p className="text-sm text-gray-500">Director</p>
-                                <p className="text-sm text-gray-500">ACCENTIQA SYSTEMS PRIVATE LIMITED</p>
+                                <p className="text-sm text-gray-500">{data?.companyName}</p>
                                 <p className="text-sm text-gray-500">{data?.companyWebsite}</p>
                             </div>
                         </div>
