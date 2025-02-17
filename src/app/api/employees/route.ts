@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { getToken } from "@/lib/jwt";
+import { getToken, verifyToken } from "@/lib/jwt";
+import { cookies } from "next/headers";
 
 const prisma = new PrismaClient();
 
@@ -8,11 +9,15 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
+    const adminId = await getToken();
 
     const skip = (page - 1) * limit;
 
     try {
         const employees = await prisma.empData.findMany({
+            where: {
+                adminId,
+            },
             skip,
             take: limit,
             orderBy: { startDate: "desc" },
@@ -36,7 +41,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
     try {
         const { empId, fname, mname, lname, email, pfNumber, phone, startDate, endDate, department, designation, salary } = await request.json();
-        const adminId = await getToken()
+        const adminId = await getToken();
 
         // Validate required fields
         if (!empId || !fname || !lname || !startDate || !adminId) {

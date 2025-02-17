@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 //update just hash for employee
 export async function GET(request: NextRequest, { params }: { params: Promise<{ empId: string }> }) {
     const empId = (await params).empId;
+    
     const employee = await prisma.empData.findUnique({
         where: {
             empId,
