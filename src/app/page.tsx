@@ -15,6 +15,9 @@ export default function Landing() {
                             <Link href="#how-it-works" className="bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-lg hover:bg-blue-700 transition duration-300">
                                 Learn More
                             </Link>
+                            <Link href="/signup" className="ml-3 border border-blue-600 text-blue-600 px-6 py-3 rounded-md font-semibold text-lg hover:bg-blue-700/10 transition duration-300">
+                                Sign up
+                            </Link>
                         </div>
                         <div className="md:w-1/2 flex justify-center">
                             <svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
