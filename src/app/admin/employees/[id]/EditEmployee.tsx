@@ -30,8 +30,6 @@ export default function EditEmployee(employee: any) {
     });
     useEffect(() => {
         reset(employee.employee);
-
-        
     }, [employee]);
 
     const AddToBlockchain = async (data: FormData) => {
@@ -59,8 +57,6 @@ export default function EditEmployee(employee: any) {
         // toast.success("Generating PDF in background, This could take a while", { duration: 5000 });
     };
     const onSubmit = async (data: FormData) => {
-
-
         instance
             .post("/employees", data)
             .then(() => {
@@ -133,7 +129,7 @@ export default function EditEmployee(employee: any) {
             <div className="flex space-x-2">
                 <div className="space-y-2">
                     <Label htmlFor="startDate">Start Date *</Label>
-                    <Input type="date" {...register("startDate", { valueAsDate: true })} />
+                    <Input type="date" {...register("startDate")} />
                     <div className="text-red-500 dark:text-red-600 text-xs">{errors?.startDate?.message}</div>
                 </div>
                 <div className="space-y-2">

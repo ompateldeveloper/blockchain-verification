@@ -5,8 +5,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model AdminUsers {
@@ -52,7 +52,7 @@ model EmpData {
 
   empId       String    @unique
   empHash     String?   @unique
-  tx      String?   @unique
+  tx          String?   @unique
   fname       String
   mname       String?
   lname       String

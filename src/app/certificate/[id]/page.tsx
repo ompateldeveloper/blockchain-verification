@@ -3,13 +3,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { instance } from "@/lib/instance";
 import { ethers } from "ethers";
-import { Info } from "lucide-react";
+import { Download, Info } from "lucide-react";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
 import { abi } from "public/EmployeeExperience.json";
 import { format } from "date-fns";
 import Link from "next/link";
+import html2canvas from "html2canvas";
+import { Button } from "@/components/ui/button";
 
 type Certificate = {
     companyName: string;
@@ -24,6 +26,7 @@ type Certificate = {
     cid: string | null;
     empHash: string | null;
     tx: string;
+    name: string;
 };
 
 function resolveString(template: string, data: any) {
@@ -36,6 +39,20 @@ export default function Page() {
     const params = useParams();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<Certificate>();
+
+    const captureRef = useRef<HTMLDivElement>(null);
+
+    const downloadAsImage = async () => {
+        if (!captureRef.current) return;
+
+        const canvas = await html2canvas(captureRef.current);
+        const image = canvas.toDataURL("image/png");
+
+        const link = document.createElement("a");
+        link.href = image;
+        link.download = data?.name+"_blockchain.png" || "capture.png";
+        link.click();
+    };
     async function fetchData() {
         const {
             data: { data: res },
@@ -81,9 +98,11 @@ export default function Page() {
                                     {data?.tx && (
                                         <>
                                             You can check this transaction on this{" "}
-                                            <Link href={"https://sepolia.etherscan.io/tx/" + data?.tx} target="_blank">
-                                                Etherium transaction link
-                                            </Link>{" "}
+                                            <Button asChild variant={"link"}>
+                                                <Link href={"https://sepolia.etherscan.io/tx/" + data?.tx} target="_blank">
+                                                    Etherium transaction link
+                                                </Link>
+                                            </Button>
                                         </>
                                     )}
                                 </div>
@@ -95,7 +114,17 @@ export default function Page() {
                             <h1 className="text-zinc-600 font-semibold text-primary mb-2">Issued by:</h1>
                             <img src={data?.companyLogo} className="w-40 aspect-auto" alt="Company Logo" />
                         </div>
-                        <div className="flex flex-col items-center justify-between space-y-0">{<QRCode className="w-48 h-48" value={(data?.companyName as string) || "I am Atomic"} />}</div>
+                        <div className="relative flex flex-col items-center justify-between space-y-0 group rounded">
+                            <div className="absolute inset-0 items-center justify-center bg-zinc-500/50 hidden group-hover:flex transition rounded ">
+                                <Button onClick={downloadAsImage}>
+                                    <Download /> Download as png
+                                </Button>
+                            </div>
+                            <div className="p-2" ref={captureRef}>
+                                {<QRCode className="w-48 h-48" value={(data?.companyName as string) || "I am Atomic"} />}
+                                <div>{data?.name}</div>
+                            </div>
+                        </div>
                     </div>
                     <div className="mt-8 text-center">
                         <h2 className="text-2xl font-semibold mb-6">Certificate of Experience</h2>

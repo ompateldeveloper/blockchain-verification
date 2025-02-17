@@ -5,22 +5,14 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-// import {
-//     AlertDialog,
-//     AlertDialogAction,
-//     AlertDialogCancel,
-//     AlertDialogContent,
-//     AlertDialogDescription,
-//     AlertDialogFooter,
-//     AlertDialogHeader,
-//     AlertDialogTitle,
-//     AlertDialogTrigger,
-// } from "@/components/ui/alert-dialog";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-
 import { MoreHorizontal } from "lucide-react";
 import { instance } from "@/lib/instance";
 import { useRouter } from "next/navigation";
+import { ethers } from "ethers";
+import { abi } from "public/EmployeeExperience.json";
+import { toast, useToast } from "@/hooks/use-toast";
+
 interface Employee {
     id: number;
     empId: string;
@@ -30,6 +22,7 @@ interface Employee {
     lname: string;
     startDate: string;
     endDate: string;
+    pfNumber: string;
 }
 export default function EmployeesTable() {
     const [employees, setEmployees] = useState<Employee[]>([]);
@@ -72,6 +65,54 @@ export default function EmployeesTable() {
             .catch((error) => {
                 console.error("Error deleting employee:", error);
             });
+    };
+    const AddToBlockchain = async (data: Employee) => {
+        const provider = new ethers.BrowserProvider((window as any)?.ethereum);
+        const signer = await provider.getSigner();
+
+        const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
+
+        if (!contractAddress) {
+            throw new Error("Contract address is not defined");
+        }
+
+        const contract = new ethers.Contract(contractAddress, abi, signer);
+
+        const tx = await contract.addExperience(data.empId, `${data.fname} ${data.mname} ${data.lname}`, "Accentiqa", String(data.startDate), String(data.endDate), data.pfNumber);
+        const receipt = await tx.wait();
+        console.log(tx, "tx");
+        console.log(receipt, "receipt");
+
+        const payload: {
+            empHash: string;
+            tx: string;
+        } = {
+            empHash: receipt.logs[0].args[0],
+            tx: tx.hash || "",
+        };
+        return payload;
+    };
+    const handleTakeAction = async (data: Employee) => {
+        try {
+            const { empHash, tx } = await AddToBlockchain(data);
+            instance
+                .post(`/employees/update-hash/${data.empId}`, { empHash, tx })
+                .then(() => {
+                    toast({
+                        title: "Updated",
+                        description: "Blockchain map of employee has been added!",
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error adding employee:", error);
+                });
+        } catch (error) {
+            toast({
+                title: "Error Updating",
+                description: "Transaction cancelled by User, Data not added to blockchain",
+                variant: "destructive",
+            });
+        }
     };
 
     return (
@@ -123,8 +164,8 @@ export default function EmployeesTable() {
                                             >
                                                 Edit details
                                             </DropdownMenuItem>
-                                            {!employee.empHash && <DropdownMenuItem onClick={() => console.log("Re:do", employee.empId)}>Take Action</DropdownMenuItem>}
-                                            {employee.endDate && (
+                                            {!employee.empHash && <DropdownMenuItem onClick={() => handleTakeAction(employee)}>Take Action</DropdownMenuItem>}
+                                            {employee.endDate && employee.empHash && (
                                                 <DropdownMenuItem
                                                     onClick={() => {
                                                         router.push("/certificate/" + employee.empId);

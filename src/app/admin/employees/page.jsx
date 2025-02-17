@@ -88,16 +88,17 @@ export default function EmployeesPage() {
                                         <div className="">Add</div>
                                     </Button>
                                 </DialogTrigger>
-                                <DialogContent >
+                                <DialogContent>
+                                    <DialogTitle className="hidden">Add employee</DialogTitle>
                                     {connected ? (
-                                        <Popover >
+                                        <Popover>
                                             <PopoverTrigger className="w-fit">
                                                 <div className="text-xs text-zinc-500 flex items-center gap-1 w-fit">
-                                                    <div className="bg-green-500 w-2 h-2 rounded-full"></div> Connected to Metamask <ChevronDown className="w-4" /> 
+                                                    <div className="bg-green-500 w-2 h-2 rounded-full"></div> Connected to Metamask <ChevronDown className="w-4" />
                                                 </div>
                                             </PopoverTrigger>
-                                            <PopoverContent align="start" className="w-min p-1" >
-                                                <Button onClick={connectWallet} variant='destructive'>
+                                            <PopoverContent align="start" className="w-min p-1">
+                                                <Button onClick={connectWallet} variant="destructive">
                                                     Disconnect Wallet
                                                 </Button>
                                             </PopoverContent>
