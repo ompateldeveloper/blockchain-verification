@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
         // Set cookies
         const response = NextResponse.json({ message: "User created successfully" }, { status: 201 });
-        response.cookies.set("token", token, { httpOnly: true, secure: false });
+        response.cookies.set("token", token, { httpOnly: true, secure: false, sameSite: "lax" });
         return response;
     } catch (error) {
         console.error("Signup error:", error);
