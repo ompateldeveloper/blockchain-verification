@@ -3,11 +3,11 @@ import React, { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { instance } from "@/lib/instance";
 
-// declare global {
-//     interface Window {
-//         ethereum?: any;
-//     }
-// }
+declare global {
+    interface Window {
+        ethereum?: any;
+    }
+}
 import useUserStore from "@/store/useUserStore";
 import { useLayoutEffect, useState } from "react";
 import { ethers } from "ethers";
