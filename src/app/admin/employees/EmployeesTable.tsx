@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { ethers } from "ethers";
 import { abi } from "public/EmployeeExperience.json";
 import { toast, useToast } from "@/hooks/use-toast";
-
+import { useEmployeesQuery } from "@/query/useEmployeesQuery";
 interface Employee {
     id: number;
     empId: string;
@@ -24,30 +24,14 @@ interface Employee {
     endDate: string;
     pfNumber: string;
 }
+
 export default function EmployeesTable() {
-    const [employees, setEmployees] = useState<Employee[]>([]);
-    const [page, setPage] = useState(1);
+    const { data: employees, refetch, page, setPage } = useEmployeesQuery(0);
     const [totalPages, setTotalPages] = useState(0);
     const router = useRouter();
     useEffect(() => {
-        fetchEmployees();
+        refetch();
     }, [page]);
-
-    const fetchEmployees = async () => {
-        try {
-            instance
-                .get(`/employees?page=${page}&limit=5`)
-                .then((response) => {
-                    setEmployees(response.data.data);
-                    setTotalPages(response.data.totalPages);
-                })
-                .catch((error) => {
-                    console.error("Error fetching employees:", error);
-                });
-        } catch (error) {
-            console.error("Error fetching employees:", error);
-        }
-    };
 
     const handlePrevPage = () => {
         setPage((prev) => Math.max(prev - 1, 1));
@@ -60,7 +44,7 @@ export default function EmployeesTable() {
         instance
             .delete(`/employees/${id}`)
             .then((response) => {
-                fetchEmployees();
+                refetch();
             })
             .catch((error) => {
                 console.error("Error deleting employee:", error);
@@ -80,8 +64,6 @@ export default function EmployeesTable() {
 
         const tx = await contract.addExperience(data.empId, `${data.fname} ${data.mname} ${data.lname}`, "Accentiqa", String(data.startDate), String(data.endDate), data.pfNumber);
         const receipt = await tx.wait();
-        console.log(tx, "tx");
-        console.log(receipt, "receipt");
 
         const payload: {
             empHash: string;
@@ -114,7 +96,7 @@ export default function EmployeesTable() {
             });
         }
     };
-
+    if (!employees) return null;
     return (
         <div>
             <Table>

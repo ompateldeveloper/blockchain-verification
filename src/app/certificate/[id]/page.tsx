@@ -4,7 +4,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 import { instance } from "@/lib/instance";
 import { ethers } from "ethers";
 import { Download, Info } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
 import { abi } from "public/EmployeeExperience.json";
@@ -30,7 +30,7 @@ type Certificate = {
 };
 
 function resolveString(template: string, data: any) {
-    return template.replace(/{{(.*?)}}/g, (match, key) => {
+    return template?.replace(/{{(.*?)}}/g, (match, key) => {
         return data[key.trim()] ?? `{{${key}}}`;
     });
 }
@@ -39,6 +39,7 @@ export default function Page() {
     const params = useParams();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<Certificate>();
+    console.log(usePathname());
 
     const captureRef = useRef<HTMLDivElement>(null);
 
@@ -50,7 +51,7 @@ export default function Page() {
 
         const link = document.createElement("a");
         link.href = image;
-        link.download = data?.name+"_blockchain.png" || "capture.png";
+        link.download = data?.name + "_blockchain.png" || "capture.png";
         link.click();
     };
     async function fetchData() {
@@ -121,7 +122,7 @@ export default function Page() {
                                 </Button>
                             </div>
                             <div className="p-2" ref={captureRef}>
-                                {<QRCode className="w-48 h-48" value={(data?.companyName as string) || "I am Atomic"} />}
+                                {<QRCode className="w-48 h-48" value={(location.href as string) || "I am Atomic"} />}
                                 <div>{data?.name}</div>
                             </div>
                         </div>

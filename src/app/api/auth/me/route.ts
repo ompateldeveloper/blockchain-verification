@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 export async function GET() {
     const adminId = await getToken();
     const data = await prisma.adminUsers.findUnique({
-        where:{
-            id:adminId
-        }
+        where: {
+            id: adminId,
+        },
     });
     return NextResponse.json({ data });
 }

@@ -1,48 +1,45 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import MandateModal from "./MandateModal";
+import useUserStore from "@/store/useUserStore";
+import { useLayoutEffect } from "react";
 import { instance } from "@/lib/instance";
-import { useLayoutEffect, useState } from "react";
-
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "@/components/theme-provider";
+import Footer from "@/components/Footer";
+const queryClient = new QueryClient();
 export default function Layout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const [user, setUser] = useState({});
+    const { updateUserDetails, clearUserDetails } = useUserStore();
     useLayoutEffect(() => {
         function fetch() {
             instance
                 .get("/auth/me")
                 .then((data) => {
-                    setUser(data.data);
+                    console.log(data.data.data);
+
+                    updateUserDetails(data.data.data);
                 })
                 .catch((error) => {});
         }
         fetch();
         return () => {
-            setUser({});
+            clearUserDetails();
         };
     }, []);
     return (
-        <>
-            <Navbar />
-            <div className="flex items-center justify-center py-16 max-w-screen">
-                <Card className="max-w-md max-h-96">
-                    <CardHeader>
-                        <CardTitle>
-                            Need Attention
-                        </CardTitle>
-                        <CardDescription>
-                            Your account need to Register Admin to Blockchain.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        
-                    </CardContent>
-                </Card>
-            </div>
-            {/* <div className="md:px-12">{children}</div> */}
-        </>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <QueryClientProvider client={queryClient}>
+                <>
+                    <Navbar />
+                    <MandateModal />
+                    <div className="md:px-12">{children}</div>
+                    <Footer />
+                </>
+            </QueryClientProvider>
+        </ThemeProvider>
     );
 }
