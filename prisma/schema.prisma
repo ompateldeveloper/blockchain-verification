@@ -5,29 +5,36 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model AdminUsers {
   id String @id @default(cuid())
 
-  email          String  @unique
-  username       String? @unique
-  fname          String?
-  lname          String?
-  password       String
-  pk             String?
-  companyName    String?
-  companyAddress String?
-  companyPhone   String?
-  companyEmail   String?
-  companyWebsite String?
-  companyLogo    String?
-  companySign    String?
+  email      String   @unique
+  username   String?  @unique
+  fname      String?
+  lname      String?
+  password   String
+  privateKey String?
+  company    Company? @relation(fields: [companyId], references: [id])
+  companyId  String?  @unique
 
   empData   EmpData[]
   templates Templates[]
+}
+
+model Company {
+  id      String      @id @default(cuid())
+  name    String?
+  address String?
+  phone   String?
+  email   String?
+  website String?
+  logo    String?
+  sign    String?
+  admin   AdminUsers?
 }
 
 model Templates {

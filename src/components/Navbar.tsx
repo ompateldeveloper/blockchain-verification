@@ -20,7 +20,7 @@ export default function Navbar() {
         router.push('/signout')   
     }
     return (
-        <div className="w-full h-14 md:px-12 flex items-center justify-between  border border-b-px dark:bg-zinc-800 ">
+        <div className="w-full h-14 md:px-12 flex items-center justify-between border-b-px dark:bg-zinc-800 ">
             <div className="flex items-center justify-center gap-4">
                 <div className="font-semibold flex items-center gap-2 text-nowrap">
                     <Blocks />
