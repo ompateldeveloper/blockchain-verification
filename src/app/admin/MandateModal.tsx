@@ -85,7 +85,7 @@ export default function MandateModal() {
     return (
         <div>
             {(!pk || pk === "") && (
-                <div className="absolute bg-zinc-900 z-50 top-0 h-screen flex items-center justify-center py-16 w-screen ">
+                <div className="absolute bg-zinc-900 z-40 top-0 h-screen flex items-center justify-center py-16 w-screen ">
                     <Card className="max-w-md max-h-96">
                         <CardHeader>
                             <CardTitle>Need Attention</CardTitle>

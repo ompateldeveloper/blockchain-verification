@@ -10,7 +10,7 @@ import { Info, Loader } from "lucide-react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { abi } from "public/EmployeeExperience.json";
+import EmployeeExperience from "public/EmployeeExperience.json";
 import { schema } from "../schema";
 
 type FormData = z.infer<typeof schema>;
@@ -42,7 +42,7 @@ export default function EditEmployee(employee: any) {
             throw new Error("Contract address is not defined");
         }
 
-        const contract = new ethers.Contract(contractAddress, abi, signer);
+        const contract = new ethers.Contract(contractAddress, EmployeeExperience.abi, signer);
 
         const tx = await contract.updateExperience(data.empId, `${data.fname} ${data.mname} ${data.lname}`, "Accentiqa", String(data.startDate), String(data.endDate), data.pfNumber);
         const receipt = await tx.wait();

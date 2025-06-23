@@ -10,7 +10,7 @@ import { MoreHorizontal } from "lucide-react";
 import { instance } from "@/lib/instance";
 import { useRouter } from "next/navigation";
 import { ethers } from "ethers";
-import { abi } from "public/EmployeeExperience.json";
+import EmployeeExperience from "public/EmployeeExperience.json";
 import { toast, useToast } from "@/hooks/use-toast";
 import { useEmployeesQuery } from "@/query/useEmployeesQuery";
 interface Employee {
@@ -60,7 +60,7 @@ export default function EmployeesTable() {
             throw new Error("Contract address is not defined");
         }
 
-        const contract = new ethers.Contract(contractAddress, abi, signer);
+        const contract = new ethers.Contract(contractAddress, EmployeeExperience.abi, signer);
 
         const tx = await contract.addExperience(data.empId, `${data.fname} ${data.mname} ${data.lname}`, "Accentiqa", String(data.startDate), String(data.endDate), data.pfNumber);
         const receipt = await tx.wait();

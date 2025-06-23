@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -12,12 +12,14 @@ import Link from "next/link";
 import { signinSchema } from "@/validators/authValidators";
 import { instance } from "@/lib/instance";
 import { useRouter } from "next/navigation";
+import { isAxiosError } from "axios";
 
 type FormData = z.infer<typeof signinSchema>;
 
 export default function Page() {
-    
     const router = useRouter();
+    const [error, setError] = useState("");
+
     const {
         register,
         handleSubmit,
@@ -33,6 +35,9 @@ export default function Page() {
                 router.push("/admin");
             })
             .catch((error) => {
+                if (isAxiosError(error)) {
+                    setError(error.response?.data.message);
+                }
                 console.log(error);
             });
     };
@@ -56,6 +61,7 @@ export default function Page() {
                             <Input {...register("password")} />
                             <div>{errors.password?.message}</div>
                         </div>
+                        {error && <div className="text-red-500 dark:text-red-600 text-center">{error}</div>}
                         <Button type="submit">Sign In</Button>
                     </form>
                     <div className="mt-4">

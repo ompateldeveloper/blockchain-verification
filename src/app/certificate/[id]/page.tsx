@@ -7,7 +7,7 @@ import { Download, Info } from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
-import { abi } from "public/EmployeeExperience.json";
+import EmployeeExperience from "public/EmployeeExperience.json";
 import { format } from "date-fns";
 import Link from "next/link";
 import html2canvas from "html2canvas";
@@ -61,7 +61,7 @@ export default function Page() {
 
         const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_API_URL);
         const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as string;
-        const contract = new ethers.Contract(contractAddress, abi, provider);
+        const contract = new ethers.Contract(contractAddress, EmployeeExperience.abi, provider);
 
         const tx = await contract.getExperience(res.empHash);
         const details = {
