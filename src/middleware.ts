@@ -12,7 +12,6 @@ export async function middleware(request: NextRequest) {
     }
     
     if (!token) {
-        console.log("hahah",token && (pathname === "/signin" || pathname === "/signup"));
         if (pathname !== "/signin" && pathname !== "/signup") {
             url.pathname = "/signin";
             return NextResponse.redirect(url);
