@@ -10,7 +10,7 @@ import { Info, Loader } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import EmployeeExperience from "public/EmployeeExperience.json";
+import EmployeeExperience from "@/static/EmployeeExperience.json";
 import { DialogClose } from "@/components/ui/dialog";
 import { schema } from "./schema";
 import { useEmployeesQuery } from "@/query/useEmployeesQuery";
@@ -20,7 +20,7 @@ type FormData = z.infer<typeof schema>;
 export default function AddEmployee() {
     const [status, setStatus] = React.useState("idle");
     const [error, setError] = React.useState("");
-    const {refetch} = useEmployeesQuery(0)
+    const { refetch } = useEmployeesQuery(0);
     console.log(error);
     const dialogCloseRef = React.useRef<HTMLButtonElement>(null);
     const {
@@ -77,7 +77,6 @@ export default function AddEmployee() {
                 setStatus("idle");
                 dialogCloseRef.current?.click();
                 reset();
-
             })
             .catch((error) => {
                 console.error("Error adding employee:", error);

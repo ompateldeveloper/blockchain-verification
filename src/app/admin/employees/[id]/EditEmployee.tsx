@@ -10,7 +10,7 @@ import { Info, Loader } from "lucide-react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import EmployeeExperience from "public/EmployeeExperience.json";
+import EmployeeExperience from "@/static/EmployeeExperience.json";
 import { schema } from "../schema";
 
 type FormData = z.infer<typeof schema>;

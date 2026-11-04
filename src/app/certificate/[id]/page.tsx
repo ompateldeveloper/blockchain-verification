@@ -7,7 +7,7 @@ import { Download, Info } from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
-import EmployeeExperience from "public/EmployeeExperience.json";
+import EmployeeExperience from "@/static/EmployeeExperience.json";
 import { format } from "date-fns";
 import Link from "next/link";
 import html2canvas from "html2canvas";

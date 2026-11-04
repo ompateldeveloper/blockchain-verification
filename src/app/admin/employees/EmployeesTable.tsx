@@ -10,7 +10,7 @@ import { MoreHorizontal } from "lucide-react";
 import { instance } from "@/lib/instance";
 import { useRouter } from "next/navigation";
 import { ethers } from "ethers";
-import EmployeeExperience from "public/EmployeeExperience.json";
+import EmployeeExperience from "@/static/EmployeeExperience.json";
 import { toast, useToast } from "@/hooks/use-toast";
 import { useEmployeesQuery } from "@/query/useEmployeesQuery";
 interface Employee {
