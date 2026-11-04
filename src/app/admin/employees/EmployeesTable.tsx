@@ -51,7 +51,15 @@ export default function EmployeesTable() {
             });
     };
     const AddToBlockchain = async (data: Employee) => {
-        const provider = new ethers.BrowserProvider((window as any)?.ethereum);
+        const ethereum = (window as any).ethereum;
+
+        // Force MetaMask to switch to Sepolia
+        await ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0xaa36a7" }],
+        });
+
+        const provider = new ethers.BrowserProvider(ethereum);
         const signer = await provider.getSigner();
 
         const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
